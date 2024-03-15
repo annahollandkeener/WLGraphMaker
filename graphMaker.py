@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 from scipy import stats
+from hampel import hampel
 
 #Reading in the CSV
 csv = pd.read_csv("recent_datadownload_ab.csv")
@@ -11,10 +12,22 @@ csv['date'] = pd.to_datetime(csv['date'])
 
 df = pd.DataFrame(csv)
 
-ceiling = 1.5
-floor = -5.5
+dfSeries = pd.Series(df['bear'].values)
+
+outliersremoved = hampel(dfSeries, window_size=1000, n_sigma=2.0)
+
+data_cleaned = outliersremoved.filtered_data
 
 
+plt.figure(figsize=(18, 6))
+
+plt.plot(df['date'], df['bear'], color="red")
+plt.plot(df['date'], data_cleaned, color='blue')
+
+print(data_cleaned)
+
+
+plt.show()
 
 
 #dropping all columns not of wl
