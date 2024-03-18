@@ -14,7 +14,17 @@ df = pd.DataFrame(csv)
 
 dfSeries = pd.Series(df['bear'].values)
 
-outliersremoved = hampel(dfSeries, window_size=1000, n_sigma=2.0)
+outliersremoved = hampel(dfSeries, window_size=2, n_sigma=10.0)
+
+date = []
+bear = []
+print("Outlier indices:")
+for i in outliersremoved.outlier_indices:
+    print(df['date'][i])
+    date.append(df['date'][i])
+
+    print(df['bear'][i])
+    bear.append(df['bear'][i])
 
 data_cleaned = outliersremoved.filtered_data
 
@@ -23,6 +33,7 @@ plt.figure(figsize=(18, 6))
 
 plt.plot(df['date'], df['bear'], color="red")
 plt.plot(df['date'], data_cleaned, color='blue')
+plt.scatter(date, bear)
 
 print(data_cleaned)
 
@@ -39,7 +50,7 @@ dfWells = dfWells.drop('id', axis=1)
     dfWells[col] = dfWells[col][dfWells[col] <= ceiling & dfWells[col][dfWells[col] >= floor]]'''
 
 ############GRAPH############
-
+'''
 #Setting up the graph 
 
 plt.figure(figsize=(18, 6))
@@ -58,6 +69,6 @@ plt.title("Angola Bay WL (" + str(df['date'][0]) + " - " + str(df['date'][len(df
 plt.xlabel("Date", fontweight='bold')
 plt.ylabel("Elevation (ft)", fontweight='bold')
 
-plt.show()
+plt.show()'''
 
 
